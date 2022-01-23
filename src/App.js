@@ -1,23 +1,52 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from "react";
+import Header from "./component/layout/Header";
+import TodoList from "./component/layout/TodoList";
+import BounceLoader from "react-spinners/BounceLoader";
+
+const TODO_THEME_KEY = "todo_theme";
+const saveTodoTheme = (theme) => {
+  const newTheme = JSON.stringify(theme);
+  localStorage.setItem(TODO_THEME_KEY, newTheme);
+};
 
 function App() {
+  const [theme, setTheme] = useState(() => {
+    return JSON.parse(localStorage.getItem(TODO_THEME_KEY)) || "light";
+  });
+
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    const x = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+
+    return () => {
+      clearTimeout(x);
+    };
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div className="mx-auto max-w-screen-xl">
+      {loading ? (
+        <div
+          className={`flex w-full min-h-screen items-center justify-center ${
+            theme === "dark" ? "bg-gray-600" : "bg-secondary-100"
+          }`}
         >
-          Learn React
-        </a>
-      </header>
+          <BounceLoader color="#B993D6" loading={loading} size={60} />
+        </div>
+      ) : (
+        <div className="w-full h-full">
+          <Header
+            theme={theme}
+            setTheme={setTheme}
+            saveTodoTheme={saveTodoTheme}
+          />
+          <TodoList theme={theme} />
+        </div>
+      )}
     </div>
   );
 }
