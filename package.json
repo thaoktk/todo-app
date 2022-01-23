@@ -1,4 +1,5 @@
 {
+  "homepage": "http://thaoktk.github.io/bodoitodo",
   "name": "bodoitodo",
   "version": "0.1.0",
   "private": true,
@@ -15,6 +16,7 @@
     "web-vitals": "^2.1.3"
   },
   "scripts": {
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -40,6 +42,7 @@
     ]
   },
   "devDependencies": {
+    "gh-pages": "^3.2.3",
     "tailwindcss": "^3.0.15"
   }
 }
