@@ -28,7 +28,7 @@ function App() {
   }, []);
 
   return (
-    <div className="mx-auto max-w-screen-xl">
+    <div className="">
       {loading ? (
         <div
           className={`flex w-full min-h-screen items-center justify-center ${

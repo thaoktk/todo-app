@@ -30,7 +30,7 @@ function Header({ theme, setTheme, saveTodoTheme }) {
       transition="transition"
       className="bg-gradient w-full px-8 md:px-16 py-4"
     >
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center mx-auto max-w-screen-xl">
         <div
           className={`text-lg md:text-xl font-semibold transition-colors ${
             theme === "dark" ? "text-slate-900" : "text-slate-100"
