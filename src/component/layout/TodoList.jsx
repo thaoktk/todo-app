@@ -1,16 +1,16 @@
-import { motion } from "framer-motion";
-import animations from "../../constant/animations";
+import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
-  BsFillCircleFill,
-  BsPlusLg,
-  BsPlusCircleFill,
-  BsFillPenFill,
   BsArrowBarUp,
   BsDashLg,
   BsFillCheckCircleFill,
+  BsFillCircleFill,
+  BsFillPenFill,
+  BsPlusCircleFill,
+  BsPlusLg,
 } from "react-icons/bs";
-import { AnimatePresence } from "framer-motion";
+import { v4 } from "uuid";
+import animations from "../../constant/animations";
 
 const TODO_LIST_KEY = "todo_list";
 const saveTodoList = (todoList) => {
@@ -19,17 +19,17 @@ const saveTodoList = (todoList) => {
 };
 
 function TodoList({ theme }) {
-  const [counter, setCounter] = useState(0);
   const [toggleAdd, setToggleAdd] = useState(false);
   const [todoList, setTodoList] = useState(() => {
     return JSON.parse(localStorage.getItem(TODO_LIST_KEY)) || [];
   });
 
   const [todo, setTodo] = useState({
-    id: counter,
+    id: undefined,
     title: "",
     completed: false,
   });
+
   const [editing, setEditing] = useState(false);
   const [editingIndex, setEditingIndex] = useState(0);
   const [filter, setFilter] = useState("all");
@@ -66,54 +66,61 @@ function TodoList({ theme }) {
 
   const handleAddTodo = () => {
     if (todo.title.trim()) {
-      setCounter(counter + 1);
       const newTodoList = [
         ...todoList,
         {
           title: todo.title,
           completed: false,
-          id: counter,
+          id: v4(),
         },
       ];
-      // console.log(newTodoList);
+
       setAndSaveTodoList(newTodoList);
       setTodo({ ...todo, title: "" });
+
       inputRef.current.focus();
     }
   };
 
   const handleDelTodo = (id) => {
     const newTodoList = todoList.filter((item) => item.id !== id);
+
     setAndSaveTodoList(newTodoList);
   };
 
-  const handleEditTodo = (id, title) => {
-    setTodo({ ...todo, title });
+  const handleEditingTodo = (id, title) => {
+    setToggleAdd(true);
     setEditing(true);
     setEditingIndex(id);
-    setToggleAdd(true);
+    setTodo({ ...todo, title });
   };
 
   const handleUpdateTodo = () => {
     const newTodoList = [...todoList];
     const updateTodo = newTodoList.find((todo) => todo.id === editingIndex);
+
     updateTodo.title = todo.title;
+
     setAndSaveTodoList(newTodoList);
     setEditing(false);
     setTodo({ ...todo, title: "" });
+
     inputRef.current.focus();
   };
 
   const handleCancelUpdateTodo = () => {
     setEditing(false);
     setTodo({ ...todo, title: "" });
+
     inputRef.current.focus();
   };
 
   const handleCheckCompleted = (id) => {
     const newTodoList = [...todoList];
     const checkingTodo = newTodoList.find((todo) => todo.id === id);
+
     checkingTodo.completed = !checkingTodo.completed;
+
     setAndSaveTodoList(newTodoList);
   };
 
@@ -254,7 +261,7 @@ function TodoList({ theme }) {
                       <div className="flex gap-3">
                         <BsFillPenFill
                           className="text-primary text-md md:text-2xl cursor-pointer"
-                          onClick={() => handleEditTodo(item.id, item.title)}
+                          onClick={() => handleEditingTodo(item.id, item.title)}
                           title="edit todo"
                         />
                         <BsPlusLg
@@ -284,7 +291,8 @@ function TodoList({ theme }) {
                   onClick={() => setFilter("all")}
                   className={`px-3 py-2 border rounded-lg w-full transition-colors ${
                     filter === "all"
-                      ? (theme === "dark" && "bg-slate-800") || "bg-slate-200"
+                      ? (theme === "dark" && "bg-slate-800 border-none") ||
+                        "bg-slate-200"
                       : "bg-transparent"
                   }`}
                   title="show all"
@@ -295,7 +303,8 @@ function TodoList({ theme }) {
                   onClick={() => setFilter(false)}
                   className={`px-3 py-2 border rounded-lg w-full transition-colors ${
                     filter === false
-                      ? (theme === "dark" && "bg-slate-800") || "bg-slate-200"
+                      ? (theme === "dark" && "bg-slate-800 border-none") ||
+                        "bg-slate-200"
                       : "bg-transparent"
                   }`}
                   title="show new"
@@ -306,7 +315,8 @@ function TodoList({ theme }) {
                   onClick={() => setFilter(true)}
                   className={`px-3 py-2 border rounded-lg w-full transition-colors ${
                     filter === true
-                      ? (theme === "dark" && "bg-slate-800") || "bg-slate-200"
+                      ? (theme === "dark" && "bg-slate-800 border-none") ||
+                        "bg-slate-200"
                       : "bg-transparent"
                   }`}
                   title="show completed"
@@ -315,7 +325,7 @@ function TodoList({ theme }) {
                 </button>
               </motion.div>
             )}
-          </div> 
+          </div>
         </div>
       </motion.div>
     </AnimatePresence>

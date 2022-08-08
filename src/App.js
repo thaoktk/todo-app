@@ -11,7 +11,7 @@ const saveTodoTheme = (theme) => {
 
 function App() {
   const [theme, setTheme] = useState(() => {
-    return JSON.parse(localStorage.getItem(TODO_THEME_KEY)) || "light";
+    return JSON.parse(localStorage.getItem(TODO_THEME_KEY)) || "dark";
   });
 
   const [loading, setLoading] = useState(false);

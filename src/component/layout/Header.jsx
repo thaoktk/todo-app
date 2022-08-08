@@ -1,16 +1,17 @@
-import React, { useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
-import animations from "../../constant/animations";
+import React, { useEffect, useMemo } from "react";
 import { BsFillCircleFill } from "react-icons/bs";
+import animations from "../../constant/animations";
 
 function Header({ theme, setTheme, saveTodoTheme }) {
-  const options = {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  };
   const time = useMemo(() => {
+    const options = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+
     return new Date().toLocaleDateString("en-GB", options);
   }, []);
 
